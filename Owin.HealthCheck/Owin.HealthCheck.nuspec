@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Owin.HealthCheck</id>
+    <version>$version$</version>
+    <title>Owin.HealthCheck</title>
+    <authors>Dillon Buchanan</authors>
+    <owners>Dillon Buchanan</owners>
+    <projectUrl>https://github.com/thedillonb/Owin.HealthCheck</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Health check middleware for the OWIN pipeline</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <tags>owin http healthcheck</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\Owin.HealthCheck" target="lib/net45" />
+  </files>
+</package>

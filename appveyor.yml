@@ -1,2 +1,10 @@
+version: 1.0.{build}
+os: Visual Studio 2015
+configuration: Release
 before_build:
-  - nuget restore
+- nuget restore
+build:
+  publish_nuget: true
+  publish_nuget_symbols: true
+  include_nuget_references: true
+  verbosity: minimal
