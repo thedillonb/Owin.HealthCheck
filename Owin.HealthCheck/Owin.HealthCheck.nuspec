@@ -13,6 +13,6 @@
     <tags>owin http healthcheck</tags>
   </metadata>
   <files>
-    <file src="bin\Release\Owin.HealthCheck" target="lib/net45" />
+    <file src="bin\Release\Owin.HealthCheck.dll" target="lib/net45" />
   </files>
 </package>
