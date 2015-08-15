@@ -20,9 +20,9 @@ namespace Owin.HealthCheck.Sql
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
+                await connection.OpenAsync().ConfigureAwait(false);
                 var cmd = new SqlCommand("select 1", connection);
-                await cmd.ExecuteScalarAsync();
+                await cmd.ExecuteScalarAsync().ConfigureAwait(false);
                 return HealthCheckStatus.Passed();
             }
         }

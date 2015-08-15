@@ -39,7 +39,7 @@ namespace Owin.HealthCheck
                     return new
                     {
                         Name = x.Name,
-                        Status = await x.Check()
+                        Status = await x.Check().ConfigureAwait(false)
                     };
                 }
                 catch (Exception e)
@@ -53,7 +53,7 @@ namespace Owin.HealthCheck
             });
 
             var allTasks = Task.WhenAll(checkTasks.ToArray());
-            if (allTasks != await Task.WhenAny(allTasks, Task.Delay(_timeout)))
+            if (allTasks != await Task.WhenAny(allTasks, Task.Delay(_timeout)).ConfigureAwait(false))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.GatewayTimeout;
             }

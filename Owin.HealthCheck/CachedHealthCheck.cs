@@ -25,7 +25,7 @@ namespace Owin.HealthCheck
             var now = DateTimeOffset.Now;
             if (_lastStatus == null || (_cacheFailures && _lastStatus.HasFailed) || _lastChecked + _cacheTime < now)
             {
-                _lastStatus = await _healthCheck.Check();
+                _lastStatus = await _healthCheck.Check().ConfigureAwait(false);
                 _lastChecked = now;
                 return _lastStatus;
             }

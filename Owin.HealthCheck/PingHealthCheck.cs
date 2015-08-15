@@ -21,7 +21,7 @@ namespace Owin.HealthCheck
         public override async Task<HealthCheckStatus> Check()
         {
             var ping = new Ping();
-            var result = await ping.SendPingAsync(_host, (int)_timeout.TotalMilliseconds);
+            var result = await ping.SendPingAsync(_host, (int)_timeout.TotalMilliseconds).ConfigureAwait(false);
             return new HealthCheckStatus(result.Status.ToString(), result.Status != IPStatus.Success);
         }
     }

@@ -13,7 +13,7 @@ namespace Owin.HealthCheck.Example
         {
             using (var app = WebApp.Start("http://localhost:3333", Configure))
             {
-                Console.WriteLine("Waiting for requests... Press any key to exit.");
+                Console.WriteLine("Waiting for requests on port 3333... Press any key to exit.");
                 Console.ReadKey();
             }
         }
@@ -34,8 +34,8 @@ namespace Owin.HealthCheck.Example
 
             builder.Run(x =>
             {
-                x.Response.StatusCode = 200;
-                return x.Response.WriteAsync("Hello!");
+                x.Response.Redirect("/healthcheck");
+                return Task.FromResult(0);
             });
         }
     }

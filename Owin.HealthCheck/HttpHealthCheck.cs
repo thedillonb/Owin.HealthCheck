@@ -26,7 +26,7 @@ namespace Owin.HealthCheck
             request.Method = "GET";
             request.Credentials = _credentials;
 
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false))
             {
                 var statusCode = (int)response.StatusCode;
                 if (statusCode >= 200 && statusCode < 300)
