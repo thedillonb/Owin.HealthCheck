@@ -1,8 +1,6 @@
 ﻿using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Owin.HealthCheck.Example
@@ -31,6 +29,7 @@ namespace Owin.HealthCheck.Example
                         .WithCache(TimeSpan.FromMinutes(1))
                 }
             });
+
 
             builder.Run(x =>
             {
