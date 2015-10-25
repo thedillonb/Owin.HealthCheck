@@ -12,7 +12,4 @@
     <releaseNotes>Initial release.</releaseNotes>
     <tags>owin http healthcheck</tags>
   </metadata>
-  <files>
-    <file src="bin\Release\Owin.HealthCheck.dll" target="lib/net45" />
-  </files>
 </package>
