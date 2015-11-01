@@ -18,7 +18,7 @@ The following is a list of built-in health check mechanisms that are available f
 
 Using this middleware is simple:
 
-```
+```c#
 // app is IAppBuilder
 
 // Create an 'always successful' healthcheck
