@@ -69,13 +69,14 @@ namespace Owin.HealthCheck
             }
             else
             {
-                var hasFailed = checkTasks.Select(x => x.Result).Any(x => x.Status.HasFailed);
+                var results = allTasks.Result;
+                var hasFailed = results.Any(x => x.Status.HasFailed);
                 context.Response.StatusCode = hasFailed ? (int)HttpStatusCode.ServiceUnavailable : (int)HttpStatusCode.OK;
 
                 if (debug)
                 {
                     var sb = new StringBuilder();
-                    foreach (var r in allTasks.Result)
+                    foreach (var r in results)
                         sb.AppendLine(r.Name + ": " + r.Status.Message);
                     await context.Response.WriteAsync(sb.ToString());
                 }
