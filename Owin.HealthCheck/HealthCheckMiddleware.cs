@@ -13,18 +13,20 @@ namespace Owin.HealthCheck
     /// </summary>
     public class HealthCheckMiddleware : OwinMiddleware
     {
+        private readonly IResponseWriter _responseWriter;
         private readonly IHealthCheck[] _healthChecks;
         private readonly TimeSpan _timeout;
 
-        public HealthCheckMiddleware(OwinMiddleware next, IEnumerable<IHealthCheck> healthChecks, TimeSpan timeout)
+        public HealthCheckMiddleware(OwinMiddleware next, IEnumerable<IHealthCheck> healthChecks, TimeSpan timeout, IResponseWriter responseWriter = null)
             : base(next)
         {
             _healthChecks = (healthChecks ?? Enumerable.Empty<IHealthCheck>()).ToArray();
             _timeout = timeout;
+            _responseWriter = responseWriter ?? new SimpleResponseWriter();
         }
 
         public HealthCheckMiddleware(OwinMiddleware next, HealthCheckMiddlewareConfig config)
-            : this(next, config.HealthChecks, config.Timeout)
+            : this(next, config.HealthChecks, config.Timeout, config.ResponseWriter)
         {
         }
 
@@ -75,10 +77,8 @@ namespace Owin.HealthCheck
 
                 if (debug)
                 {
-                    var sb = new StringBuilder();
-                    foreach (var r in results)
-                        sb.AppendLine(r.Name + ": " + r.Status.Message);
-                    await context.Response.WriteAsync(sb.ToString());
+                    var result = this._responseWriter.WriteResponse(results);
+                    await context.Response.WriteAsync(result);
                 }
             }
         }
@@ -98,6 +98,11 @@ namespace Owin.HealthCheck
         /// A list of health checks to execute
         /// </summary>
         public IList<IHealthCheck> HealthChecks { get; set; } = new List<IHealthCheck>();
+
+        /// <summary>
+        /// The response writer used to format the response (if debug = true).
+        /// </summary>
+        public IResponseWriter ResponseWriter = new SimpleResponseWriter();
     }
 
     /// <summary>

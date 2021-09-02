@@ -58,9 +58,11 @@
     <Compile Include="HealthCheckStatus.cs" />
     <Compile Include="HttpHealthCheck.cs" />
     <Compile Include="IHealthCheck.cs" />
+    <Compile Include="IResponseWriter.cs" />
     <Compile Include="OwinExtensions.cs" />
     <Compile Include="PingHealthCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleResponseWriter.cs" />
     <Compile Include="SqlHealthCheck.cs" />
   </ItemGroup>
   <ItemGroup>
