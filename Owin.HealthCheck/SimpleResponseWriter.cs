@@ -6,6 +6,9 @@
     internal class SimpleResponseWriter : IResponseWriter
     {
         /// <inheritdoc />
+        public string ContentType { get; } = "text/plain";
+
+        /// <inheritdoc />
         public string WriteResponse(dynamic results)
         {
             var sb = new StringBuilder();

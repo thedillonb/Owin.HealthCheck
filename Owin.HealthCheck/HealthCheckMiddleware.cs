@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Owin.HealthCheck
 {
+    using System.Diagnostics;
+    using System.Dynamic;
+
     /// <summary>
     /// The health check middleware which will execute a collection of <see cref="IHealthCheck"/>
     /// </summary>
@@ -45,22 +48,25 @@ namespace Owin.HealthCheck
 
             var checkTasks = _healthChecks.Select(async x =>
             {
+                var stopwatch = new Stopwatch();
+                dynamic result = new ExpandoObject();
+                result.Name = x.Name;
                 try
                 {
-                    return new
-                    {
-                        Name = x.Name,
-                        Status = await x.Check().ConfigureAwait(false)
-                    };
+                    stopwatch.Start();
+                    var status = await x.Check().ConfigureAwait(false);
+                    stopwatch.Stop();
+                    result.Status = status;
+                    result.Duration = stopwatch.Elapsed;
                 }
                 catch (Exception e)
                 {
-                    return new
-                    {
-                        Name = x.Name,
-                        Status = HealthCheckStatus.Failed(e.Message)
-                    };
+                    stopwatch.Stop();
+                    result.Status = HealthCheckStatus.Failed(e.Message);
+                    result.Duration = stopwatch.Elapsed;
                 }
+
+                return result;
             });
 
             var allTasks = Task.WhenAll(checkTasks.ToArray());
@@ -70,13 +76,14 @@ namespace Owin.HealthCheck
             }
             else
             {
-                var results = allTasks.Result;
+                var results = await allTasks.ConfigureAwait(false);
                 var hasFailed = results.Any(x => x.Status.HasFailed);
                 context.Response.StatusCode = hasFailed ? (int)HttpStatusCode.ServiceUnavailable : (int)HttpStatusCode.OK;
 
                 if (debug)
                 {
                     var result = this._responseWriter.WriteResponse(results);
+                    context.Response.ContentType = this._responseWriter.ContentType;
                     await context.Response.WriteAsync(result);
                 }
             }
